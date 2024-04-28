@@ -53,13 +53,10 @@ const CodeDebugger = () => {
         Output
       </Badge><br />
       
+      { source!==''? 
       <div className="flex-1">
-    
-          <MarkdownPreview source={source}  style={{ padding:16 }} />
-    
-      
-
-      </div><br />
+        <MarkdownPreview source={source} style={{ padding:16}}  />
+      </div>:<div className="flex-1"></div> } <br />
 
       <form
         className="sticky bottom-5 overflow-hidden rounded-lg border bg-opacity-75 backdrop-blur-md focus-within:ring-1 focus-within:ring-ring " x-chunk="dashboard-03-chunk-1"

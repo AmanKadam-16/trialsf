@@ -13,8 +13,8 @@ function AIInterviewer() {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await fetchAccessToken({
-        apiKey: 'PjvoDvF8nuoNGMmYuDixAm0sOK7EbiJGx33oH5Xx0rzlYADX',
-        clientSecret: 'wJoAgmCs043gWD9EGyq83hYCl6uOvdBmg3IHms0kdQxHN3tuJJ1IszY4xk0TAtyY',
+        apiKey: 'RccUmtK8OMhJlPp87p9Kx0pEgj5dZnKBT77durlLN4U6uE9p',
+        clientSecret: 'Z3hAaSQxTCnOHQQS4yvKoddVdip9OOoXRlNwz1RlkDEtiO7vTSDrxx3frGfzbGfu',
       });
       setAccessToken(token);
     };
