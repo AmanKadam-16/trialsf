@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '/workspaces/ai-verse/ai-verse/utils/index';
+import { cn } from '../utils/index';
 
 const Select = SelectPrimitive.Root;
 
