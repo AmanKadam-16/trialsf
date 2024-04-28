@@ -5,7 +5,6 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Badge } from "@/components/ui/badge"
 import { CornerDownLeft, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
 import { Label } from '../ui/label';
 
 const CodeReviewer = () => {

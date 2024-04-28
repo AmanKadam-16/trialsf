@@ -1,8 +1,6 @@
 import { Button } from '@/components/Button';
 import { CircledText } from '@/components/CircledText';
 import { motion } from 'framer-motion';
-import { Bell } from 'lucide-react';
-import * as Tooltip from '@radix-ui/react-tooltip';
 import { cn } from '@/utils';
 import { useDerivedLayoutState } from '@/store/useDerivedLayoutState';
 

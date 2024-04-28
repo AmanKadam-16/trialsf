@@ -1,6 +1,5 @@
 import { ConversationFrame } from '@/components/ConversationFrame';
-import { OpenButton } from '@/components/OpenButton';
-import { LayoutState, useLayoutStore } from '@/store/layout';
+import { useLayoutStore } from '@/store/layout';
 import { ConversationScreen } from '@/views/ConversationScreen';
 import { ErrorScreen } from '@/views/ErrorScreen';
 import { IntroScreen } from '@/views/IntroScreen';
