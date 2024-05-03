@@ -258,7 +258,7 @@ const App = () => {
       </DropdownMenuContent>
     </DropdownMenu> }
           </header>
-          <main className="flex flex-1 flex-col  md:gap-8 md:p-8">
+          <main className="flex flex-1 flex-col  md:gap-8 md:p-8 ">
           {pageCount === "0" && !isMobile && currentTheme === "light" &&
           <>
           <BlackHole1 /> 
@@ -443,7 +443,7 @@ const App = () => {
           }
        {pageCount === "0" &&  isMobile &&
        <>
-       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+       <div className="grid gap-4 sm: px-4 sm: py-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 ">
         <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeGen} >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-2xl font-bold">
