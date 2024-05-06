@@ -61,7 +61,7 @@ const CodeReviewer = () => {
   const source = generatedCode || '';
 
   return (
-    <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl p-4 lg:col-span-2">
+    <div className="relative flex h-full min-h-screen flex-col rounded-xl p-4 lg:col-span-2">
       <Badge className="absolute right-3 top-3">Output</Badge>
       <br />
       {source !== '' ? (
