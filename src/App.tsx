@@ -7,19 +7,19 @@ import {
   Share,
   SquareTerminal,
   Triangle,
-  Moon,
-  Sun
+  // Moon,
+  // Sun
 } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useTheme } from "@/components/theme-provider"
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
+// import { useTheme } from "@/components/theme-provider"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import CodeGenerator from "./components/features/CodeGenerator"
 import CodeDebugger from "./components/features/CodeDebugger"
 import CodeExplainer from "./components/features/CodeExplainer"
@@ -37,28 +37,28 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import AIInterviewer from "./components/features/AIInterviewer"
-import BlackHole from "./components/BlackHole/bHole"
-import BlackHole1 from "./components/BlackHole/bHole1"
+// import BlackHole from "./components/BlackHole/bHole"
+// import BlackHole1 from "./components/BlackHole/bHole1"
 
 const App = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
   const [pageCount, setPageCount] = useState("0");
-  const { setTheme } = useTheme()
-  const [currentTheme, setCurrentTheme] = useState('dark');
-  useEffect(() => {
-    // Function to check the window width
-    const checkDevice = () => {
-      const screenWidth = window.innerWidth;
-      setIsMobile(screenWidth < 768); // Set true if width is less than 768px
-    };
+  // const { setTheme } = useTheme()
+  // const [currentTheme, setCurrentTheme] = useState('dark');
+  // useEffect(() => {
+  //   // Function to check the window width
+  //   const checkDevice = () => {
+  //     const screenWidth = window.innerWidth;
+  //     setIsMobile(screenWidth < 768); // Set true if width is less than 768px
+  //   };
 
     // Check on mount and on resize of the window
-    checkDevice();
-    window.addEventListener('resize', checkDevice);
+    // checkDevice();
+    // window.addEventListener('resize', checkDevice);
 
     // Cleanup listener
-    return () => window.removeEventListener('resize', checkDevice);
-  }, []);
+  //   return () => window.removeEventListener('resize', checkDevice);
+  // }, []);
   const home = () => {
     setPageCount("0");
   };
@@ -78,8 +78,8 @@ const App = () => {
     setPageCount("5");
   };
   const ai_Interviewer = () => {
-    setCurrentTheme('light');
-    setTheme("light");
+    // setCurrentTheme('light');
+    // setTheme("light");
     setPageCount("6");
   };
 
@@ -99,7 +99,7 @@ const App = () => {
   };
 
   return (
-    <div className="h-screen w-full pl-[56px]" data-color-mode={currentTheme} >
+    <div className="h-screen w-full pl-[56px]" data-color-mode={"light"} >
       <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r-[1px]">
         <div className="border-b-[1px] p-2">
           <Button variant="outline" size="icon" aria-label="Home" onClick={home}>
@@ -239,7 +239,7 @@ const App = () => {
             <Share className="size-3.5" />
             Share
           </Button>
-          {pageCount !== '6' &&
+          {/* {pageCount !== '6' &&
             <DropdownMenu >
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
@@ -256,195 +256,14 @@ const App = () => {
                   Dark
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>}
+            </DropdownMenu>} */}
         </header>
         <main className="flex-1 flex-col  md:gap-8 md:p-8 ">
-          {pageCount === "0" && !isMobile && currentTheme === "light" &&
-            <>
-              <BlackHole1 />
-              <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeGen} >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Generator
-                    </CardTitle>
-                    <SquareTerminal className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Supplementary Tool For code generation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Beginners  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeExplain} >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Explainer
-                    </CardTitle>
-                    <MessageSquareCode className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Useful for code interpretation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Students  ★★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDoc}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Documentation
-                    </CardTitle>
-                    <Book className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">AI-powered code documentor..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Developers  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDebug}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Debugger
-                    </CardTitle>
-                    <BugPlay className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Useful for debugging tricky code snippets..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Students  ★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeReview}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Reviewer
-                    </CardTitle>
-                    <Code2 className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Comprehensive code evaluation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Helpful for Developers  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={ai_Interviewer}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      AI-Interviewer
-                    </CardTitle>
-                    <Bot className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Your personal mock-interviewer..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Freshers & Students  ★★★★★</p>
-                  </CardFooter>
-                </Card>
-              </div>
-            </>
-          }
-          {pageCount === "0" && !isMobile && currentTheme === "dark" &&
-            <>
-              <BlackHole />
-              <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeGen} >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Generator
-                    </CardTitle>
-                    <SquareTerminal className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Supplementary Tool For code generation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Beginners  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeExplain} >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Explainer
-                    </CardTitle>
-                    <MessageSquareCode className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Useful for code interpretation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Students  ★★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDoc}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Documentation
-                    </CardTitle>
-                    <Book className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">AI-powered code documentor..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Developers  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDebug}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Debugger
-                    </CardTitle>
-                    <BugPlay className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Useful for debugging tricky code snippets..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Students  ★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeReview}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      Code Reviewer
-                    </CardTitle>
-                    <Code2 className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Comprehensive code evaluation..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Helpful for Developers  ★★★★</p>
-                  </CardFooter>
-                </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={ai_Interviewer}>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-2xl font-bold">
-                      AI-Interviewer
-                    </CardTitle>
-                    <Bot className="size-5" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl font-medium">Your personal mock-interviewer..</div>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <p className="text-xs">Great for Freshers & Students  ★★★★★</p>
-                  </CardFooter>
-                </Card>
-              </div>
-            </>
-          }
-          {pageCount === "0" && isMobile &&
-            <>
+
+
+            { pageCount === "0" &&
               <div className="grid gap-4 sm: px-4 sm: py-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 ">
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeGen} >
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeGen} >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Generator
@@ -458,7 +277,7 @@ const App = () => {
                     <p className="text-xs">Great for Beginners  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeExplain} >
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeExplain} >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Explainer
@@ -472,7 +291,7 @@ const App = () => {
                     <p className="text-xs">Great for Students  ★★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDoc}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDoc}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Documentation
@@ -486,7 +305,7 @@ const App = () => {
                     <p className="text-xs">Great for Developers  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeDebug}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDebug}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Debugger
@@ -500,7 +319,7 @@ const App = () => {
                     <p className="text-xs">Great for Students  ★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={codeReview}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeReview}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Reviewer
@@ -514,7 +333,7 @@ const App = () => {
                     <p className="text-xs">Helpful for Developers  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white transition-colors duration-300" onClick={ai_Interviewer}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={ai_Interviewer}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       AI-Interviewer
@@ -528,7 +347,8 @@ const App = () => {
                     <p className="text-xs">Great for Freshers & Students  ★★★★★</p>
                   </CardFooter>
                 </Card>
-              </div></>}
+              </div> }
+              
 
 
           {

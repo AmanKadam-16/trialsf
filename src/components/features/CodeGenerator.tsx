@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { OpenAI } from "openai";
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import { Badge } from "@/components/ui/badge"
@@ -7,9 +7,41 @@ import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 
 const CodeGenerator = () => {
+  const exampleMessages = [
+    {
+      heading: 'Create a React component for',
+      subheading: 'a todo list',
+      message: `Create a React component for a todo list with the following features:
+- Add a new todo item
+- Mark a todo item as completed
+- Delete a todo item
+- View both completed and pending todo items`
+    },
+    {
+      heading: 'Write a function in JavaScript to',
+      subheading: 'reverse a string',
+      message: 'Write a function in JavaScript to reverse a string'
+    },
+    {
+      heading: 'Implement a sorting algorithm in Python',
+      subheading: 'like merge sort',
+      message: `Implement a sorting algorithm in Python like merge sort`
+    },
+    {
+      heading: 'Create a simple REST API in Node.js with',
+      subheading: 'Express.js and MongoDB',
+      message: `Create a simple REST API in Node.js with Express.js and MongoDB for managing user data with the following endpoints:
+- GET /users (list all users)
+- POST /users (create a new user)
+- PUT /users/:id (update a user)
+- DELETE /users/:id (delete a user)`
+    }
+  ]
   const [currentInput, setCurrentInput] = useState('');
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const openai = new OpenAI({
     apiKey: "80bc8e21ddb6c068cb1adf347c46ee6aaa487627e2f9416ef9cd5ed81213350c",
@@ -23,7 +55,6 @@ const CodeGenerator = () => {
 
   const handleButtonClick = async () => {
     if (currentInput.trim() === '') {
-      // If the input is empty or contains only whitespace, do nothing
       return;
     }
 
@@ -57,6 +88,19 @@ const CodeGenerator = () => {
     }
   };
 
+  const handlePromptClick = async (prompt: { heading?: string; subheading?: string; message: any; }) => {
+    setCurrentInput(prompt.message);
+    setSelectedPrompt(prompt.message);
+    await handleButtonClick(); // Submit the form after setting the prompt
+  };
+
+  useEffect(() => {
+    if (selectedPrompt !== '') {
+      textareaRef.current?.focus();
+      handleButtonClick();
+    }
+  }, [selectedPrompt]);
+
   const source = generatedCode || '';
 
   return (
@@ -65,10 +109,36 @@ const CodeGenerator = () => {
       <br />
       {source !== '' ? (
         <div className="flex-1">
-          <MarkdownPreview source={source} style={{padding: 16}} />
+          <MarkdownPreview source={source} style={{ padding: 16 }} />
         </div>
       ) : (
-        <div className="flex-1"></div>
+        <>
+          <div className="flex-1 mx-auto max-w-2xl px-4">
+            <div className="flex flex-col gap-2 rounded-lg border bg-background p-8">
+              <h1 className="text-5xl md:text-6xl text-center font-semibold">
+                AI Code Generator
+              </h1>
+              {selectedPrompt === '' && (
+                <div className="mt-4">
+                  <h2 className="text-xl font-semibold">Sample Prompts</h2>
+                  <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    {exampleMessages.map((prompt, index) => (
+                      <div
+                        key={index}
+                        className="cursor-pointer rounded-lg bg-gray-200 p-4 hover:bg-gray-300"
+                        onClick={() => handlePromptClick(prompt)}
+                      >
+                        <h3 className="text-lg font-semibold">
+                          {prompt.heading} <span className="text-gray-600">{prompt.subheading}</span>
+                        </h3>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </>
       )}
       <br />
       <form className="sticky bottom-5 overflow-hidden rounded-lg border bg-opacity-75 backdrop-blur-md focus-within:ring-1 focus-within:ring-ring ">
@@ -81,6 +151,7 @@ const CodeGenerator = () => {
           value={currentInput}
           onChange={handleInputChange}
           onKeyDown={handleGenerateCode}
+          ref={textareaRef}
           className="min-h-12 resize-vertical border-0 bg-transparent p-3 shadow-none focus:outline-none focus:border-none w-full"
         ></textarea>
         <div className="flex items-center p-3 pt-0 ">
@@ -107,5 +178,4 @@ const CodeGenerator = () => {
     </div>
   );
 };
-
 export default CodeGenerator;
