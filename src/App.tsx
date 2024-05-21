@@ -16,6 +16,8 @@ import {
 //   DropdownMenuItem,
 //   DropdownMenuTrigger,
 // } from "@/components/ui/dropdown-menu"
+import "./App.css"
+import { motion } from 'framer-motion';
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
@@ -44,10 +46,8 @@ const App = () => {
   // const [isMobile, setIsMobile] = useState(false);
   const [pageCount, setPageCount] = useState("0");
   const { setTheme } = useTheme()
-  const [currentTheme, setCurrentTheme] = useState('light');
 
   useEffect(()=>{
-    setCurrentTheme('light');
     setTheme("light");
   },[])
   // useEffect(() => {
@@ -267,8 +267,11 @@ const App = () => {
 
 
             { pageCount === "0" &&
-              <div className="grid gap-4 sm: px-4 sm: py-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 ">
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeGen} >
+              <motion.div className="grid gap-4 sm: px-4 sm: py-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 " 
+                        initial={{ opacity: 0 }}
+          animate={{ opacity: 1, translateY: -4 }}
+          transition={{ duration: 2 }}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeGen} >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Generator
@@ -282,7 +285,7 @@ const App = () => {
                     <p className="text-xs">Great for Beginners  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeExplain} >
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeExplain} >
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Explainer
@@ -296,7 +299,7 @@ const App = () => {
                     <p className="text-xs">Great for Students  ★★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDoc}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDoc}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Documentation
@@ -310,7 +313,7 @@ const App = () => {
                     <p className="text-xs">Great for Developers  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDebug}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDebug}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Debugger
@@ -324,7 +327,7 @@ const App = () => {
                     <p className="text-xs">Great for Students  ★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={codeReview}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeReview}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       Code Reviewer
@@ -338,7 +341,7 @@ const App = () => {
                     <p className="text-xs">Helpful for Developers  ★★★★</p>
                   </CardFooter>
                 </Card>
-                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-black hover:text-white cursor-pointer transition-colors duration-300" onClick={ai_Interviewer}>
+                <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={ai_Interviewer}>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                       AI-Interviewer
@@ -352,7 +355,7 @@ const App = () => {
                     <p className="text-xs">Great for Freshers & Students  ★★★★★</p>
                   </CardFooter>
                 </Card>
-              </div> }
+              </motion.div> }
               
 
 

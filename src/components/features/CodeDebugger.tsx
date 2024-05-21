@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { CornerDownLeft, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
+import { motion } from 'framer-motion';
 
 const CodeDebugger = () => {
   const exampleMessages = [
@@ -184,40 +185,47 @@ const CodeDebugger = () => {
 
   return (
     <div className="relative flex h-full min-h-screen flex-col rounded-xl p-4 lg:col-span-2">
-      <Badge className="absolute right-3 top-3">Output</Badge>
-      <br />
+
       {source !== '' ? (
-        <div className="flex-1">
-          <MarkdownPreview source={source} style={{ padding: 16 }} />
-        </div>
-      ) : (
         <>
-          <div className="flex-1 mx-auto max-w-2xl px-4">
-            <div className="flex flex-col gap-2 rounded-lg border bg-background p-8">
-              <h1 className="text-5xl md:text-6xl text-center font-semibold">
-                AI Code Debugger
-              </h1>
-              {selectedPrompt === '' && (
-                <div className="mt-4">
-                  <h2 className="text-xl font-semibold">Sample Prompts</h2>
-                  <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    {exampleMessages.map((prompt, index) => (
-                      <div
-                        key={index}
-                        className="cursor-pointer rounded-lg bg-gray-200 p-4 hover:bg-gray-300"
-                        onClick={() => handlePromptClick(prompt)}
-                      >
-                        <h3 className="text-lg font-semibold">
-                          {prompt.heading} <span className="text-gray-600">{prompt.subheading}</span>
-                        </h3>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+          <Badge className="absolute right-3 top-3">Output</Badge>
+          <br />
+          <div className="flex-1">
+            <MarkdownPreview source={source} style={{ padding: 16 }} />
           </div>
         </>
+      ) : (
+        <motion.div className="flex-1 mx-auto max-w-2xl px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, translateY: -4 }}
+          transition={{ duration: 2 }}
+        >
+          <div className="flex flex-col gap-2 rounded-lg border bg-background p-8">
+            <h1 className="text-5xl md:text-6xl text-center font-semibold">
+              AI Code Debugger
+            </h1>
+            {selectedPrompt === '' && (
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold">Sample Prompts</h2>
+                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {exampleMessages.map((prompt, index) => (
+                    <div
+                      key={index}
+                      className="cursor-pointer rounded-lg bg-gray-200 p-4 hover:bg-gray-300"
+                      onClick={() => handlePromptClick(prompt)}
+                    >
+                      <h3 className="text-lg font-semibold">
+                        {prompt.heading} <span className="text-gray-600">{prompt.subheading}</span>
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+        </motion.div>
+
       )}
       <br />
       <form className="sticky bottom-5 overflow-hidden rounded-lg border bg-opacity-75 backdrop-blur-md focus-within:ring-1 focus-within:ring-ring ">
@@ -226,13 +234,13 @@ const CodeDebugger = () => {
         </Label>
         <textarea
           id="message"
-          placeholder="Enter your problem statement..."
+          placeholder="Paste your code here..."
           value={currentInput}
           onChange={handleInputChange}
           onKeyDown={handleGenerateCode}
           ref={textareaRef}
           className="min-h-12 resize-vertical border-0 bg-transparent p-3 shadow-none focus:outline-none focus:border-none w-full"
-        ></textarea>
+        autoFocus></textarea>
         <div className="flex items-center p-3 pt-0 ">
           <Button
             type="submit"
