@@ -16,10 +16,10 @@ import {
 //   DropdownMenuItem,
 //   DropdownMenuTrigger,
 // } from "@/components/ui/dropdown-menu"
-// import { useTheme } from "@/components/theme-provider"
+import { useTheme } from "@/components/theme-provider"
 import { Button } from "./components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CodeGenerator from "./components/features/CodeGenerator"
 import CodeDebugger from "./components/features/CodeDebugger"
 import CodeExplainer from "./components/features/CodeExplainer"
@@ -43,8 +43,13 @@ import AIInterviewer from "./components/features/AIInterviewer"
 const App = () => {
   // const [isMobile, setIsMobile] = useState(false);
   const [pageCount, setPageCount] = useState("0");
-  // const { setTheme } = useTheme()
-  // const [currentTheme, setCurrentTheme] = useState('dark');
+  const { setTheme } = useTheme()
+  const [currentTheme, setCurrentTheme] = useState('light');
+
+  useEffect(()=>{
+    setCurrentTheme('light');
+    setTheme("light");
+  },[])
   // useEffect(() => {
   //   // Function to check the window width
   //   const checkDevice = () => {
@@ -78,8 +83,8 @@ const App = () => {
     setPageCount("5");
   };
   const ai_Interviewer = () => {
-    // setCurrentTheme('light');
-    // setTheme("light");
+
+
     setPageCount("6");
   };
 
