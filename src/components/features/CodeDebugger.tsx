@@ -101,7 +101,7 @@ const CodeDebugger = () => {
       subheading: 'Array Flattening',
       message: `function flattenArray(arr) {
     let result = [];
-    for (let i = 0; i < arr.length; i++) {
+    for (i < arr.length; i++) {
       if (Array.isArray(arr[i])) {
         result = result.concat(flattenArray(arr[i]));
       } else {
@@ -137,19 +137,29 @@ const CodeDebugger = () => {
     if (currentInput.trim() === '') {
       return;
     }
-
+  
     setIsLoading(true);
+    setGeneratedCode('');
+  
     try {
-      const chatCompletion = await openai.chat.completions.create({
+      const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Debugger.' },
+          { role: 'system', content: 'You are an AI Code Debugger.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
         max_tokens: 1024,
+        stream: true,
       });
-      const codeOutput = chatCompletion.choices[0].message.content;
-      setGeneratedCode(codeOutput);
+  
+      for await (const chunk of stream) {
+        const [choice] = chunk.choices;
+        const { content } = choice.delta;
+        const partialContent = content;
+        if (partialContent) {
+          setGeneratedCode(prev => (prev || '') + partialContent);
+        }
+      }
     } catch (error) {
       console.error('Error generating code:', error);
     } finally {

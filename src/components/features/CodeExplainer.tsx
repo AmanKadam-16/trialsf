@@ -88,19 +88,29 @@ const CodeExplainer = () => {
     if (currentInput.trim() === '') {
       return;
     }
-
+  
     setIsLoading(true);
+    setGeneratedCode('');
+  
     try {
-      const chatCompletion = await openai.chat.completions.create({
+      const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Explainer.' },
+          { role: 'system', content: 'You are an AI Code Explainer.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
         max_tokens: 1024,
+        stream: true,
       });
-      const codeOutput = chatCompletion.choices[0].message.content;
-      setGeneratedCode(codeOutput);
+  
+      for await (const chunk of stream) {
+        const [choice] = chunk.choices;
+        const { content } = choice.delta;
+        const partialContent = content;
+        if (partialContent) {
+          setGeneratedCode(prev => (prev || '') + partialContent);
+        }
+      }
     } catch (error) {
       console.error('Error generating code:', error);
     } finally {

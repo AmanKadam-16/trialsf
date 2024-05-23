@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { OpenAI } from "openai";
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 import { CornerDownLeft, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
@@ -91,17 +91,27 @@ const CodeReviewer = () => {
     }
 
     setIsLoading(true);
+    setGeneratedCode('');
+
     try {
-      const chatCompletion = await openai.chat.completions.create({
+      const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Reviewer.' },
+          { role: 'system', content: 'You are an AI Code Reviewer. If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
         max_tokens: 1024,
+        stream: true,
       });
-      const codeOutput = chatCompletion.choices[0].message.content;
-      setGeneratedCode(codeOutput);
+
+      for await (const chunk of stream) {
+        const [choice] = chunk.choices;
+        const { content } = choice.delta;
+        const partialContent = content;
+        if (partialContent) {
+          setGeneratedCode(prev => (prev || '') + partialContent);
+        }
+      }
     } catch (error) {
       console.error('Error generating code:', error);
     } finally {
@@ -194,7 +204,8 @@ const CodeReviewer = () => {
           onKeyDown={handleGenerateCode}
           ref={textareaRef}
           className="min-h-12 resize-vertical border-0 bg-transparent p-3 shadow-none focus:outline-none focus:border-none w-full"
-        autoFocus></textarea>
+          autoFocus
+        ></textarea>
         <div className="flex items-center p-3 pt-0 ">
           <Button
             type="submit"

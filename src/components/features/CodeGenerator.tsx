@@ -58,19 +58,29 @@ const CodeGenerator = () => {
     if (currentInput.trim() === '') {
       return;
     }
-
+  
     setIsLoading(true);
+    setGeneratedCode('');
+  
     try {
-      const chatCompletion = await openai.chat.completions.create({
+      const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Generator.' },
+          { role: 'system', content: 'You are an AI Code Generator. Always provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
         max_tokens: 1024,
+        stream: true,
       });
-      const codeOutput = chatCompletion.choices[0].message.content;
-      setGeneratedCode(codeOutput);
+  
+      for await (const chunk of stream) {
+        const [choice] = chunk.choices;
+        const { content } = choice.delta;
+        const partialContent = content;
+        if (partialContent) {
+          setGeneratedCode(prev => (prev || '') + partialContent);
+        }
+      }
     } catch (error) {
       console.error('Error generating code:', error);
     } finally {
@@ -116,8 +126,6 @@ const CodeGenerator = () => {
           </div>
         </>
       ) : (
-
-
         <motion.div className="flex-1 mx-auto max-w-2xl px-4" initial={{ opacity: 0 }}
           animate={{ opacity: 1, translateY: -4 }}
           transition={{ duration: 2 }}>
@@ -145,8 +153,6 @@ const CodeGenerator = () => {
             )}
           </div>
         </motion.div>
-
-
       )}
       <br />
       <form className="sticky bottom-5 overflow-hidden rounded-lg border bg-opacity-75 backdrop-blur-md focus-within:ring-1 focus-within:ring-ring ">

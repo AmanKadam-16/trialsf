@@ -12,7 +12,7 @@ const NoSSR = dynamic(
   { ssr: false },
 );
 
-export default function AIInterviewer() {
+export default function AIInterviewer1() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
