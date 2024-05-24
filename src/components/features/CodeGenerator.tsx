@@ -65,7 +65,7 @@ const CodeGenerator = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: ` You are only an AI Code Generator And Respond to questions only if they ask you to generate any Code and cheerfully deny such questions. Let you response be formatted according to Github Markdown Rules.` },
+          { role: 'system', content: ` You are only an AI Code Generator And Respond to questions only if they ask you to generate any Code and cheerfully deny such questions. Let your response be formatted according to Github Markdown Rules.` },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
