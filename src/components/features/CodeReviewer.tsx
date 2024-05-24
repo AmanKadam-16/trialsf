@@ -96,7 +96,7 @@ const CodeReviewer = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Reviewer. If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
+          { role: 'system', content: 'You are only an AI Code Reviewer And Respond to questions only if they ask you to review any Code and cheerfully deny such questions. If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',

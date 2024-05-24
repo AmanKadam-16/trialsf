@@ -144,7 +144,7 @@ const CodeDebugger = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Debugger.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
+          { role: 'system', content: 'You are only an AI Code Debugger And Respond to questions only if they ask you to debug any Code and cheerfully deny such questions.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
