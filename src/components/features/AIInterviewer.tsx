@@ -30,7 +30,7 @@ function AIInterviewer() {
             <VoiceProvider
               auth={{ type: 'accessToken', value: accessToken }}
               hostname={'api.hume.ai'}
-              messageHistoryLimit={10}
+              messageHistoryLimit={30}
               configId="37a70f88-c123-4053-b903-367d44a66b56"
               onMessage={(message) => {
                 console.log('message', message);
