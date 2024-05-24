@@ -153,7 +153,7 @@ const CodeReviewer = () => {
           <Badge className="absolute right-3 top-3">Output</Badge>
           <br />
           <div className="flex-1">
-            <MarkdownPreview source={source} style={{ padding: 16 }} />
+            <MarkdownPreview source={source} style={{ padding: 26 }} />
           </div>
         </>
 

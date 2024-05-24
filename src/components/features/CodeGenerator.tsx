@@ -65,7 +65,7 @@ const CodeGenerator = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: 'You are an AI Code Generator. Always provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).' },
+          { role: 'system', content: ` You are an AI Code Generator. Let you response be formatted according to Github Markdown Rules.` },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
@@ -122,7 +122,8 @@ const CodeGenerator = () => {
           <br />
 
           <div className="flex-1">
-            <MarkdownPreview source={source} style={{ padding: 16 }} />
+            <MarkdownPreview source={source} style={{ padding: 26 }} />
+
           </div>
         </>
       ) : (
