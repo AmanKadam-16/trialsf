@@ -77,7 +77,7 @@ export const LastVoiceMessage: FC<LastVoiceMessageProps> = ({
     <div
       className={cn(
         'pointer-events-none absolute px-6 text-center',
-        isShortFrame ? 'top-36' : 'top-48',
+        isShortFrame ? 'top-36' : 'top-28',
       )}
     >
       <LayoutGroup>

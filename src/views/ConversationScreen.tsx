@@ -53,8 +53,8 @@ export const ConversationScreen = () => {
                       exit={{ opacity: 0 }}
                       transition={{ duration: 1, ease: 'easeInOut' }}
                       className={cn(
-                        'absolute mt-12 rounded-full bg-tan-200/50 px-3 py-1 gap-2 ',
-                        isShortFrame ? 'mt-12' : 'mt-36',
+                        'absolute mt-12 text-center rounded-full bg-tan-200/50 px-3 py-1 gap-2 ',
+                        isShortFrame ? 'mt-16' : 'mt-40',
                       )}
                     >
                       {JSON.stringify(

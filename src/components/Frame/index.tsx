@@ -7,7 +7,7 @@ export type FrameProps = PropsWithChildren;
 const frameStyles = cva([
   'rounded-[25px]',
   'backdrop-blur-[10px]',
-  'text-black',
+  'text-red',
   'antialiased',
   'transition-colors',
  
@@ -33,7 +33,7 @@ export const Frame: FC<FrameProps> = ({ children }) => {
 
   const frameDimensions = {
     width: `${windowDimensions.width * 0.7}px`, // 80% of the window width
-    height: `${windowDimensions.height * 0.7}px`, // 80% of the window height
+    height: `${windowDimensions.height * 0.8}px`, // 80% of the window height
   };
 
   return (
