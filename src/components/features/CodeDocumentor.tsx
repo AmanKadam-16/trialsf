@@ -125,7 +125,7 @@ const CodeDocumentor = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content:'<|start_header_id|>system<|end_header_id|>You are an AI Code Documentor.Don\'t entertain any non-coding inquiries.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).<|eot_id|> ' },
+          { role: 'system', content:'<|start_header_id|>system<|end_header_id|>You are an AI Code Documentor so perform documentation of provided code according to Github Markdown Rules.Don\'t entertain any non-coding inquiries.If your response contains code blocks then provide the generated code within Markdown code blocks, specifying the language (e.g., ```javascript or ```python).<|eot_id|> ' },
           { role: 'user', content: `<|start_header_id|>user<|end_header_id|>${currentInput}<|eot_id|> `},
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
