@@ -75,7 +75,7 @@ const CodeExplainer = () => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const openai = new OpenAI({
-    apiKey: "80bc8e21ddb6c068cb1adf347c46ee6aaa487627e2f9416ef9cd5ed81213350c",
+    apiKey: "4dd3ec54aef08aea07c498f8c1b47627f00e9b506fa66f6b31ca4f47cceda434",
     baseURL: "https://api.together.xyz/v1",
     dangerouslyAllowBrowser: true
   });
