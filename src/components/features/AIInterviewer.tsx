@@ -15,8 +15,8 @@ function AIInterviewer() {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await fetchAccessToken({
-        apiKey: 'vnhhiAx0jg0X97bicCRrC3XqnKj2Ml6JeQD44gDDBT2is9vB',
-        clientSecret: 'xCfqC7yQDQb8pOeKnJZbF4huL1PbkMBOqoXkwQZxA52p6IcYbuYPY9iIpYYtnzhg',
+        apiKey: 'TNRvupZVNPHcxTQapHgIjcmGrsj6B1lCyWX6HyM4txRobYE9',
+        clientSecret: 'XKIj07PaIck2UZGwDsc3N7LWDh1ycGts1pWzb1CmstuwK2hVqkiazbxSgUyz0NzN',
       });
       setAccessToken(token);
     };
@@ -33,7 +33,7 @@ function AIInterviewer() {
               auth={{ type: 'accessToken', value: accessToken }}
               hostname={'api.hume.ai'}
               messageHistoryLimit={30}
-              configId="2025ad58-d4ff-42f4-8015-c2d6d661a2e5"
+              configId="45023b46-fd06-458e-a1b6-8b415d1da917"
               onMessage={(message) => {
                 console.log('message', message);
               }}
