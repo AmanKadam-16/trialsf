@@ -65,7 +65,7 @@ export const ConversationScreen: React.FC = () => {
       });
     }
   }, [lastVoiceMessage, lastUserMessage, id, sortedEmotions, userMsgs]);
-
+console.log(chatHistory)
   return (
     <>
       <LastVoiceMessage lastVoiceMessage={lastVoiceMessage} />
