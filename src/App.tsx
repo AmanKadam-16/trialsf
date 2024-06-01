@@ -1,395 +1,196 @@
-import {
-  Book,
-  Bot,
-  BugPlay,
-  Code2,
-  MessageSquareCode,
-  Share,
-  SquareTerminal,
-  Triangle,
-  // Moon,
-  // Sun
-} from "lucide-react"
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu"
-import "./App.css"
+import { useState, useEffect, useRef } from 'react';
+import { OpenAI } from "openai";
+import MarkdownPreview from '@uiw/react-markdown-preview';
+import { Badge } from "@/components/ui/badge"
+import { CornerDownLeft, Loader2 } from 'lucide-react';
+import { Button } from './components/ui/button';
+import { Label } from './components/ui/label';
 import { motion } from 'framer-motion';
-import { useTheme } from "@/components/theme-provider"
-import { Button } from "./components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./components/ui/card"
-import { useEffect, useState } from "react"
-import CodeGenerator from "./components/features/CodeGenerator"
-import CodeDebugger from "./components/features/CodeDebugger"
-import CodeExplainer from "./components/features/CodeExplainer"
-import CodeDocumentor from "./components/features/CodeDocumentor"
-import CodeReviewer from "./components/features/CodeReviewer"
-
-// const AIInterviewer = dynamic(() => import('./components/features/AIInterviewer'), {
-//   ssr: false,
-// });
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import AIInterviewer from "./components/features/AIInterviewer"
-// import BlackHole from "./components/BlackHole/bHole"
-// import BlackHole1 from "./components/BlackHole/bHole1"
 
 const App = () => {
-  // const [isMobile, setIsMobile] = useState(false);
-  const [pageCount, setPageCount] = useState("0");
-  const { setTheme } = useTheme()
+  const exampleMessages = [
+    {
+      heading: 'Create a React component for',
+      subheading: 'a todo list',
+      message: `Create a React component for a todo list with the following features:
+- Add a new todo item
+- Mark a todo item as completed
+- Delete a todo item
+- View both completed and pending todo items`
+    },
+    {
+      heading: 'Write a function in JavaScript to',
+      subheading: 'reverse a string',
+      message: 'Write a function in JavaScript to reverse a string'
+    },
+    {
+      heading: 'Implement a sorting algorithm in Python',
+      subheading: 'like merge sort',
+      message: `Implement a sorting algorithm in Python like merge sort`
+    },
+    {
+      heading: 'Create a simple REST API in Node.js with',
+      subheading: 'Express.js and MongoDB',
+      message: `Create a simple REST API in Node.js with Express.js and MongoDB for managing user data with the following endpoints:
+- GET /users (list all users)
+- POST /users (create a new user)
+- PUT /users/:id (update a user)
+- DELETE /users/:id (delete a user)`
+    }
+  ]
+  const [currentInput, setCurrentInput] = useState('');
+  const [generatedCode, setGeneratedCode] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const openai = new OpenAI({
+    apiKey: "4dd3ec54aef08aea07c498f8c1b47627f00e9b506fa66f6b31ca4f47cceda434",
+    baseURL: "https://api.together.xyz/v1",
+    dangerouslyAllowBrowser: true
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCurrentInput(e.target.value);
+  };
+
+  const handleButtonClick = async () => {
+    if (currentInput.trim() === '') {
+      return;
+    }
+  
+    setIsLoading(true);
+    setGeneratedCode('');
+  
+    try {
+      const stream = await openai.chat.completions.create({
+        messages: [
+          { role: 'system', content: ` You are only an AI Code Generator And Respond to questions only if they ask you to generate any Code and cheerfully deny such questions. Let your response be formatted according to Github Markdown Rules.` },
+          { role: 'user', content: currentInput },
+        ],
+        model: 'meta-llama/Llama-3-70b-chat-hf',
+        max_tokens: 1024,
+        stream: true,
+      });
+  
+      for await (const chunk of stream) {
+        const [choice] = chunk.choices;
+        const { content } = choice.delta;
+        const partialContent = content;
+        if (partialContent) {
+          setGeneratedCode(prev => (prev || '') + partialContent);
+        }
+      }
+    } catch (error) {
+      console.error('Error generating code:', error);
+    } finally {
+      setIsLoading(false);
+      setCurrentInput('');
+    }
+  };
+
+  const handleGenerateCode = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleButtonClick();
+    } else if (e.key === 'Enter' && e.shiftKey) {
+      e.preventDefault();
+      setCurrentInput(currentInput + '\n');
+    }
+  };
+
+  const handlePromptClick = async (prompt: { heading?: string; subheading?: string; message: any; }) => {
+    setCurrentInput(prompt.message);
+    setSelectedPrompt(prompt.message);
+    await handleButtonClick(); // Submit the form after setting the prompt
+  };
 
   useEffect(() => {
-    setTheme("light");
-  }, [])
-  // useEffect(() => {
-  //   // Function to check the window width
-  //   const checkDevice = () => {
-  //     const screenWidth = window.innerWidth;
-  //     setIsMobile(screenWidth < 768); // Set true if width is less than 768px
-  //   };
+    if (selectedPrompt !== '') {
+      textareaRef.current?.focus();
+      handleButtonClick();
+    }
+  }, [selectedPrompt]);
 
-  // Check on mount and on resize of the window
-  // checkDevice();
-  // window.addEventListener('resize', checkDevice);
-
-  // Cleanup listener
-  //   return () => window.removeEventListener('resize', checkDevice);
-  // }, []);
-  const home = () => {
-    setPageCount("0");
-  };
-  const codeGen = () => {
-    setPageCount("1");
-  };
-  const codeDebug = () => {
-    setPageCount("2");
-  };
-  const codeExplain = () => {
-    setPageCount("3");
-  };
-  const codeDoc = () => {
-    setPageCount("4");
-  };
-  const codeReview = () => {
-    setPageCount("5");
-  };
-  const ai_Interviewer = () => {
-
-
-    setPageCount("6");
-  };
-
-  const copyLinkToClipboard = () => {
-    const link = window.location.href; // Get the current URL
-    navigator.clipboard.writeText(link)
-      .then(() => console.log("Link copied to clipboard"))
-      .catch((err) => console.error("Failed to copy link:", err));
-  };
-  const openLinkedInPost = () => {
-    const linkedInPostUrl = "https://www.linkedin.com/share?url=" + encodeURIComponent(window.location.href);
-    window.open(linkedInPostUrl, "_blank");
-  };
-  const handleShare = () => {
-    copyLinkToClipboard();
-    openLinkedInPost();
-  };
+  const source = generatedCode || '';
 
   return (
-    <div className="h-screen w-full pl-[56px]" data-color-mode={"light"} >
-      <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r-[1px]">
-        <div className="border-b-[1px] p-2">
-          <Button variant="outline" size="icon" aria-label="Home" onClick={home}>
-            <Triangle className="size-5 fill-foreground" />
+    <div className="relative flex h-full min-h-screen flex-col rounded-xl p-4  lg:col-span-2">
+      {source !== '' ? (
+        <>
+          <Badge className="absolute right-3 top-3">Output</Badge>
+          <br />
+
+          <div className="flex-1">
+            <MarkdownPreview source={source} style={{ padding: 26 }} />
+
+          </div>
+        </>
+      ) : (
+        <motion.div className="flex-1 mx-auto max-w-2xl px-4" initial={{ opacity: 0 }}
+          animate={{ opacity: 1, translateY: -4 }}
+          transition={{ duration: 2 }}>
+          <div className="flex flex-col gap-2 rounded-lg border bg-background p-8">
+            <h1 className="text-5xl md:text-6xl text-center font-semibold">
+              City Guide App
+            </h1>
+            {selectedPrompt === '' && (
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold">Sample Prompts</h2>
+                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {exampleMessages.map((prompt, index) => (
+                    <div
+                      key={index}
+                      className="cursor-pointer rounded-lg bg-gray-200 p-4 hover:bg-gray-300"
+                      onClick={() => handlePromptClick(prompt)}
+                    >
+                      <h3 className="text-lg font-semibold">
+                        {prompt.heading} <span className="text-gray-600">{prompt.subheading}</span>
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+      <br />
+      <form className="sticky bottom-5 overflow-hidden rounded-lg border bg-opacity-75 backdrop-blur-md focus-within:ring-1 focus-within:ring-ring ">
+        <Label htmlFor="message" className="sr-only">
+          Message
+        </Label>
+        <textarea
+          id="message"
+          placeholder="Enter your problem statement..."
+          value={currentInput}
+          onChange={handleInputChange}
+          onKeyDown={handleGenerateCode}
+          ref={textareaRef}
+          className="min-h-12 resize-vertical border-0 bg-transparent p-3 shadow-none focus:outline-none focus:border-none w-full"
+        autoFocus></textarea>
+        <div className="flex items-center p-3 pt-0 ">
+          <Button
+            type="submit"
+            size="sm"
+            className="ml-auto gap-1.5"
+            onClick={handleButtonClick}
+            disabled={isLoading || currentInput.trim() === ''}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                Generate Code <CornerDownLeft className="size-3.5" />
+              </>
+            )}
           </Button>
         </div>
-        <nav className="grid gap-1 p-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Playground"
-                  onClick={codeGen}
-                >
-                  <SquareTerminal className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                Code Generator
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Models"
-                  onClick={codeDebug}
-                >
-                  <BugPlay className="size-5" />
-
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                Code Debugger
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="API"
-                  onClick={codeExplain}
-                >
-                  <Code2 className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                Code Explainer
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Documentation"
-                  onClick={codeDoc}
-                >
-                  <Book className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                Code Documentor
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Code Explainer"
-                  onClick={codeReview}
-                >
-                  <MessageSquareCode className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                Code Reviewer
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label="Settings"
-                  onClick={ai_Interviewer}
-                >
-                  <Bot className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                AI Interviewer
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-
-        </nav>
-      </aside>
-
-      <div className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-[57px] items-center gap-1 border-b-[1px] bg-opacity-75 backdrop-blur-md px-4">
-          <h1 className="text-xl font-semibold">AI-VERSE</h1>
-
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-auto gap-1.5 text-sm"
-            onClick={handleShare}
-          >
-            <Share className="size-3.5" />
-            Share
-          </Button>
-          {/* {pageCount !== '6' &&
-            <DropdownMenu >
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => { setTheme("light"); setCurrentTheme('light') }}>
-                  Light
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => { setTheme("dark"); setCurrentTheme('dark') }}>
-                  Dark
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>} */}
-        </header>
-        <main className="flex-1 flex-col  md:gap-8 md:p-8 ">
-
-
-          {pageCount === "0" &&
-            <motion.div className="grid gap-4 sm: px-4 sm: py-4 md:grid-cols-2 md:gap-8 lg:grid-cols-3 "
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, translateY: -4 }}
-              transition={{ duration: 2 }}>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeGen} >
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    Code Generator
-                  </CardTitle>
-                  <SquareTerminal className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">Supplementary Tool For code generation..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Great for Beginners  ★★★★</p>
-                </CardFooter>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeExplain} >
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    Code Explainer
-                  </CardTitle>
-                  <MessageSquareCode className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">Useful for code interpretation..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Great for Students  ★★★★★</p>
-                </CardFooter>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDoc}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    Code Documentation
-                  </CardTitle>
-                  <Book className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">AI-powered code documentor..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Great for Developers  ★★★★</p>
-                </CardFooter>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeDebug}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    Code Debugger
-                  </CardTitle>
-                  <BugPlay className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">Useful for debugging tricky code snippets..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Great for Students  ★★★</p>
-                </CardFooter>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={codeReview}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    Code Reviewer
-                  </CardTitle>
-                  <Code2 className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">Comprehensive code evaluation..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Helpful for Developers  ★★★★</p>
-                </CardFooter>
-              </Card>
-              <Card x-chunk="dashboard-01-chunk-0" className="hover:bg-gray-700 hover:text-white cursor-pointer transition-colors duration-300" onClick={ai_Interviewer}>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-2xl font-bold">
-                    AI-Interviewer
-                  </CardTitle>
-                  <Bot className="size-5" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl font-medium">Your personal mock-interviewer..</div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <p className="text-xs">Great for Freshers & Students  ★★★★★</p>
-                </CardFooter>
-              </Card>
-            </motion.div>}
-
-
-
-          {
-            pageCount === "1" &&
-            <CodeGenerator />
-          }
-          {
-            pageCount === "2" &&
-            <CodeDebugger />
-          }
-          {
-            pageCount === "3" &&
-            <CodeExplainer />
-          }
-          {
-            pageCount === "4" &&
-            <CodeDocumentor />
-          }
-          {
-            pageCount === "5" &&
-            <CodeReviewer />
-          }
-
-
-          {
-            pageCount === "6" &&
-            <AIInterviewer />
-          }
-
-        </main>
-      </div>
+      </form>
     </div>
-
-  )
-}
+  );
+};
 export default App;
