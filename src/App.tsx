@@ -10,34 +10,26 @@ import { motion } from 'framer-motion';
 const App = () => {
   const exampleMessages = [
     {
-      heading: 'Create a React component for',
-      subheading: 'a todo list',
-      message: `Create a React component for a todo list with the following features:
-- Add a new todo item
-- Mark a todo item as completed
-- Delete a todo item
-- View both completed and pending todo items`
+      heading: 'Learn about',
+      subheading: 'Ajinkyatara Fort',
+      message: `Tell me about Ajinkyatara Fort in Satara. Include its historical significance and what I can expect when visiting.`
     },
     {
-      heading: 'Write a function in JavaScript to',
-      subheading: 'reverse a string',
-      message: 'Write a function in JavaScript to reverse a string'
+      heading: 'Tourist spots in',
+      subheading: 'Satara',
+      message: 'What are the top tourist spots in Satara?'
     },
     {
-      heading: 'Implement a sorting algorithm in Python',
-      subheading: 'like merge sort',
-      message: `Implement a sorting algorithm in Python like merge sort`
+      heading: 'Best time to visit',
+      subheading: 'Kaas Plateau',
+      message: `When is the best time to visit Kaas Plateau, and what can I see there?`
     },
     {
-      heading: 'Create a simple REST API in Node.js with',
-      subheading: 'Express.js and MongoDB',
-      message: `Create a simple REST API in Node.js with Express.js and MongoDB for managing user data with the following endpoints:
-- GET /users (list all users)
-- POST /users (create a new user)
-- PUT /users/:id (update a user)
-- DELETE /users/:id (delete a user)`
+      heading: 'Local cuisine in',
+      subheading: 'Satara',
+      message: `What are some must-try local dishes in Satara, and where can I find them?`
     }
-  ]
+  ];
   const [currentInput, setCurrentInput] = useState('');
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +57,7 @@ const App = () => {
     try {
       const stream = await openai.chat.completions.create({
         messages: [
-          { role: 'system', content: ` You are only an AI Code Generator And Respond to questions only if they ask you to generate any Code and cheerfully deny such questions. Let your response be formatted according to Github Markdown Rules.` },
+          { role: 'system', content: `You are a friendly and knowledgeable virtual guide for Satara City. Your role is to provide accurate and helpful information about the city to users, including historical landmarks, tourist attractions, local culture, dining options, and practical tips for visitors. Additionally, you can provide Google Maps links to the locations you mention. Always aim to be informative, engaging, and welcoming in your responses (provide links in this format > https://www.google.com/maps/search/?api=1&query=PLACE_NAME). Let your response be formatted according to Github Markdown Rules.` },
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
@@ -115,7 +107,7 @@ const App = () => {
   const source = generatedCode || '';
 
   return (
-    <div className="relative flex h-full min-h-screen flex-col rounded-xl p-4  lg:col-span-2">
+    <div className="relative flex h-full min-h-screen flex-col rounded-xl p-4  lg:col-span-2" data-color-mode={"light"}>
       {source !== '' ? (
         <>
           <Badge className="absolute right-3 top-3">Output</Badge>
