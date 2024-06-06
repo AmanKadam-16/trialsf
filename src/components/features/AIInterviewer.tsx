@@ -9,6 +9,13 @@ import { cn } from '@/utils';
 import { useDerivedLayoutState } from '@/store/useDerivedLayoutState';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Button } from '../ui/button';
+//
+import { OpenAI } from "openai";
+import MarkdownPreview from '@uiw/react-markdown-preview';
+import { CornerDownLeft, Loader2 } from 'lucide-react';
+//
+
 
 type ProsodyScore = { name: string; score: string };
 type ChatEntry = {
@@ -77,13 +84,15 @@ function AIInterviewer() {
   // ]
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const { isShortFrame } = useDerivedLayoutState();
+  const [isLoading, setIsLoading] = useState(false);
   const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [generatedFeedback, setGeneratedFeedback] = useState<string | null>(null);
  
   useEffect(() => {
     const fetchToken = async () => {
       const token = await fetchAccessToken({
-        apiKey: '7eAHNfB5AdkI7UwR21TSOIo8fvybpNxYyuopCGfvrDANNyu1',
-        clientSecret: 'R3GUZJtt4tBFCEACwFNtQ1icqhUnsZlaHlVjjOvJhL23J1js5c4NDlKX913B9Tt8',
+        apiKey: '167EG37WIefeHvvytXJFLpefIBc6KB574gBtoEojmidhervt',
+        clientSecret: 'W5HjxFGyVDTEGFXYPG61Y1DVkXUcydrcNKZkScRqqKiFGY9OSnSgeOIXAdzzmqlr',
       });
       
       setAccessToken(token);
@@ -107,6 +116,59 @@ console.log(chartData)
 }
   });
 
+  const openai = new OpenAI({
+    apiKey: "4dd3ec54aef08aea07c498f8c1b47627f00e9b506fa66f6b31ca4f47cceda434",
+    baseURL: "https://api.together.xyz/v1",
+    dangerouslyAllowBrowser: true
+  });
+
+  const handleGenerateFeedback = async () => {
+    const storedChatHistory = sessionStorage.getItem('chatHistory');
+    if (storedChatHistory) {
+      const chatHistory: ChatEntry[] = JSON.parse(storedChatHistory);
+      setIsLoading(true);
+      try {
+        const stream = await openai.chat.completions.create({
+          messages: [
+            { role: 'system', content: `
+              You are an AI Interviewer providing feedback on an interview based on the interview history. Your feedback should rate the user's performance on the following metrics, using a scale of 1 to 10, and include relevant emojis:
+
+1. 🗣️ Communication Skills: Rate the user's ability to express themselves clearly and effectively, based on their responses.
+2. 🧠 Critical Thinking: Rate the user's ability to analyze information, think critically, and provide thoughtful responses.
+3. 🤝 Interpersonal Skills: Rate the user's ability to build rapport, establish trust, and engage with the interviewer, based on their responses and the emotions detected.
+4. 👂 Active Listening: Rate the user's ability to listen attentively and respond appropriately to the interviewer's questions and comments, based on their responses and the emotions detected.
+5. 🌟 Overall Impression: Rate the user's overall performance and the impression they made during the interview, taking into account their responses and the emotions detected.
+
+For each metric, provide a rating from 1 to 10, with 1 being the lowest and 10 being the highest. Also, include a brief explanation or justification for each rating, considering the user's responses and the emotions detected during the interview.
+
+              `
+
+             },
+            { role: 'user', content: `Here is the chat history from the interview: ${JSON.stringify(chatHistory)}` },
+          ],
+          model: 'meta-llama/Llama-3-70b-chat-hf',
+          max_tokens: 1024,
+          stream: true,
+        });
+
+        let feedback = '';
+        for await (const chunk of stream) {
+          const [choice] = chunk.choices;
+          const { content } = choice.delta;
+          const partialContent = content;
+          if (partialContent) {
+            feedback += partialContent;
+          }
+        }
+        setGeneratedFeedback(feedback);
+      } catch (error) {
+        console.error('Error generating feedback:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <>
       <Frame >
@@ -116,7 +178,7 @@ console.log(chartData)
               auth={{ type: 'accessToken', value: accessToken }}
               hostname={'api.hume.ai'}
               messageHistoryLimit={30}
-              configId={'6307ec34-eb65-4b9d-9c88-7e5b1502ca6f'}
+              configId={'80679125-59bf-4c8c-a647-0fdc83bb9fea'}
               onMessage={(message) => {
                 console.log('message', message);
               }}
@@ -165,7 +227,24 @@ console.log(chartData)
               <Line type="monotone" dataKey="peak" stroke="#FF0000" />
             </LineChart>
           </ResponsiveContainer>
+          <Button onClick={handleGenerateFeedback} className="mt-4">
+          {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                Generate Feedback <CornerDownLeft className="size-3.5" />
+              </>
+            )}
+          </Button>
         </CardContent>
+        {generatedFeedback && (
+            <CardContent>
+              <MarkdownPreview source={generatedFeedback} />
+            </CardContent>
+          )}
       </Card>
 </div>
       {/* </motion.div> */}

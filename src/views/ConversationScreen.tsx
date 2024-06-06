@@ -19,7 +19,7 @@ type ChatEntry = {
 
 export const ConversationScreen: React.FC = () => {
   const { lastVoiceMessage, isPlaying, micFft, lastUserMessage, messages, sendUserInput } = useVoice();
-  const prosody = lastVoiceMessage?.models.prosody?.scores ?? {};
+  const prosody = lastUserMessage?.models.prosody?.scores ?? {};
   const sortedEmotions: ProsodyScore[] = Object.entries(prosody)
     .sort(([, a], [, b]) => b - a)
     .slice(0, 3)
