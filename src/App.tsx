@@ -17,6 +17,7 @@ import {
 //   DropdownMenuTrigger,
 // } from "@/components/ui/dropdown-menu"
 import "./App.css"
+import sparkler from './assets/sparkler.png'
 import { motion } from 'framer-motion';
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "./components/ui/button"
@@ -107,8 +108,9 @@ const App = () => {
     <div className="h-screen w-full pl-[56px]" data-color-mode={"light"} >
       <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r-[1px]">
         <div className="border-b-[1px] p-2">
-          <Button variant="outline" size="icon" aria-label="Home" onClick={home}>
+          <Button variant="ghost" size="icon" aria-label="Home" onClick={home}>
             <Triangle className="size-5 fill-foreground" />
+            {/* <img src={sparkler} alt="Logo" /> */}
           </Button>
         </div>
         <nav className="grid gap-1 p-2">

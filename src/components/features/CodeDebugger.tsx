@@ -15,7 +15,7 @@ const CodeDebugger = () => {
       message: `function sumEvenNumbers(arr) {
     let sum = 0;
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i] % 2 === 0) {
+      if (arr[i] % 2 = 0) {
         sum += arr[i];
       }
     }
@@ -24,7 +24,7 @@ const CodeDebugger = () => {
   
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const result = sumEvenNumbers(numbers);
-  console.log(result); // Expected output: 30, but the actual output is incorrect
+  console.log(result);
   `
     },
     {
@@ -39,7 +39,7 @@ const CodeDebugger = () => {
       password: '',
     });
   
-    const handleChange = (e) => {
+    const handleChange = () => {
       setFormData({
         ...formData,
         [e.target.name]: e.target.value,
@@ -88,12 +88,12 @@ const CodeDebugger = () => {
       message: `def fibonacci(n):
       if n <= 0:
           return 0
-      elif n == 1:
+      elif n = 1:
           return 1
       else:
           return fibonacci(n - 1) + fibonacci(n - 2)
   
-  print(fibonacci(6)) # Expected output: 8, but the actual output is incorrect
+  print(fibonacci(6)) 
   `
     },
     {
@@ -101,7 +101,7 @@ const CodeDebugger = () => {
       subheading: 'Array Flattening',
       message: `function flattenArray(arr) {
     let result = [];
-    for (i < arr.length; i++) {
+    for (i < arr.length; i+) {
       if (Array.isArray(arr[i])) {
         result = result.concat(flattenArray(arr[i]));
       } else {
@@ -113,7 +113,7 @@ const CodeDebugger = () => {
   
   const nestedArray = [1, 2, [3, 4], [5, [6, 7]]];
   const flattenedArray = flattenArray(nestedArray);
-  console.log(flattenedArray); // Expected output: [1, 2, 3, 4, 5, 6, 7], but the actual output is incorrect
+  console.log(flattenedArray); 
   `
     }
   ];

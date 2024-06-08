@@ -140,7 +140,7 @@ console.log(chartData)
 5. 🌟 Overall Impression: Rate the user's overall performance and the impression they made during the interview, taking into account their responses and the emotions detected.
 
 For each metric, provide a rating from 1 to 10, with 1 being the lowest and 10 being the highest. Also, include a brief explanation or justification for each rating, considering the user's responses and the emotions detected during the interview.
-
+[Note* : Beautify the response in Markdown]
               `
 
              },
@@ -242,7 +242,7 @@ For each metric, provide a rating from 1 to 10, with 1 being the lowest and 10 b
         </CardContent>
         {generatedFeedback && (
             <CardContent>
-              <MarkdownPreview source={generatedFeedback} />
+              <MarkdownPreview style={{ padding: 26, borderRadius: '5px' }} source={generatedFeedback} />
             </CardContent>
           )}
       </Card>
