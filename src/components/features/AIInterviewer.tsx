@@ -91,8 +91,8 @@ function AIInterviewer() {
   useEffect(() => {
     const fetchToken = async () => {
       const token = await fetchAccessToken({
-        apiKey: '167EG37WIefeHvvytXJFLpefIBc6KB574gBtoEojmidhervt',
-        clientSecret: 'W5HjxFGyVDTEGFXYPG61Y1DVkXUcydrcNKZkScRqqKiFGY9OSnSgeOIXAdzzmqlr',
+        apiKey: 'iCQx5paNLBkryG37edyXnjYvN5AuXehColsLKJ7U7PANfGFb',
+        clientSecret: 'RMZoEN5qiGHTDOHxTsokoShrAoKxoUDe72SBUSgpGViUALY8v3ZcPbDvaDys2zuN',
       });
       
       setAccessToken(token);
@@ -178,7 +178,7 @@ For each metric, provide a rating from 1 to 10, with 1 being the lowest and 10 b
               auth={{ type: 'accessToken', value: accessToken }}
               hostname={'api.hume.ai'}
               messageHistoryLimit={30}
-              configId={'80679125-59bf-4c8c-a647-0fdc83bb9fea'}
+              configId={'79673966-86c6-4b4b-94d1-31fc7b000f52'}
               onMessage={(message) => {
                 console.log('message', message);
               }}
