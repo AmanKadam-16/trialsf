@@ -17,7 +17,7 @@ import {
 //   DropdownMenuTrigger,
 // } from "@/components/ui/dropdown-menu"
 import "./App.css"
-import sparkler from './assets/sparkler.png'
+// import sparkler from './assets/sparkler.png'
 import { motion } from 'framer-motion';
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "./components/ui/button"
