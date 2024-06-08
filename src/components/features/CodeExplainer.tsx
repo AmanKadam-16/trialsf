@@ -99,7 +99,7 @@ const CodeExplainer = () => {
           { role: 'user', content:  `<|start_header_id|>user<|end_header_id|>${currentInput}<|eot_id|> `},
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
-        max_tokens: 1024,
+        max_tokens: 7000,
         stream: true,
       });
   

@@ -100,7 +100,7 @@ const CodeReviewer = () => {
           { role: 'user', content: currentInput },
         ],
         model: 'meta-llama/Llama-3-70b-chat-hf',
-        max_tokens: 1024,
+        max_tokens: 7000,
         stream: true,
       });
 
