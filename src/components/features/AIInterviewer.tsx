@@ -146,7 +146,7 @@ For each metric, provide a rating from 1 to 10, with 1 being the lowest and 10 b
              },
             { role: 'user', content: `Here is the chat history from the interview: ${JSON.stringify(chatHistory)}` },
           ],
-          model: 'meta-llama/Llama-3-70b-chat-hf',
+          model: 'mistralai/Mixtral-8x22B-Instruct-v0.1',
           max_tokens: 7000,
           stream: true,
         });
