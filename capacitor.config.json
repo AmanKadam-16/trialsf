@@ -1,0 +1,8 @@
+{
+    "appId": "io.ionic.aiverse",
+    "appName": "aiverse",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {}
+  }

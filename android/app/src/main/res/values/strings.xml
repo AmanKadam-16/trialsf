@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">aiverse</string>
+    <string name="title_activity_main">aiverse</string>
+    <string name="package_name">io.ionic.aiverse</string>
+    <string name="custom_url_scheme">io.ionic.aiverse</string>
+</resources>
